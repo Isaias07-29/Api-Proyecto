@@ -123,4 +123,39 @@ class InscriptionsController extends Controller
 
         return response()->json($data, 200);
     }
+
+
+    public function getInscriptionsByStudent($id)
+    {
+        $inscriptions = Inscriptions::where('user_id', $id)->get();
+
+        if ($inscriptions->isEmpty()) {
+            return response()->json(['message' => 'El alumno no tiene inscripciones'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Inscripciones del alumno encontradas',
+            'data' => $inscriptions,
+            'status' => 200
+        ], 200);
+    }
+
+    public function getInscriptionsByCourse($id)
+    {
+        $inscriptions = Inscriptions::where('course_id', $id)->get();
+
+        if ($inscriptions->isEmpty()) {
+            return response()->json(['message' => 'El curso no tiene inscripciones'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Inscripciones del cursp encontradas',
+            'data' => $inscriptions,
+            'status' => 200
+        ], 200);
+    }
+
+
+
+
 }
