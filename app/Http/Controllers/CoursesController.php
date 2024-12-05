@@ -31,7 +31,7 @@ class CoursesController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
-            'category_id' => 'required',
+            'category' => 'required',
             'profesor_id' => 'required'
         ]);
 
@@ -42,7 +42,7 @@ class CoursesController extends Controller
         $courses = Courses::create([
             'name' => $request->name,
             'description' => $request->description,
-            'category_id' => $request->category_id,
+            'category' => $request->category,
             'profesor_id' => $request->profesor_id
         ]);
 
@@ -90,7 +90,7 @@ class CoursesController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
-            'category_id' => 'required',
+            'category' => 'required',
             'profesor_id' => 'required'
         ]);
 
@@ -101,7 +101,7 @@ class CoursesController extends Controller
 
         $courses->name = $request->name;
         $courses->description = $request->description;
-        $courses->category_id = $request->category_id;
+        $courses->category_id = $request->category;
         $courses->profesor_id = $request->profesor_id;
         $courses->save();
 
@@ -149,7 +149,7 @@ class CoursesController extends Controller
 
     public function getCoursesByCategory($category_id)
     {
-        $courses = Courses::where('category_id', $category_id)->get();
+        $courses = Courses::where('category', $category_id)->get();
 
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No hay cursos con la categoria '], 404);
