@@ -1,12 +1,36 @@
-#!/usr/bin/env bash
+# Usa una imagen oficial de PHP con extensiones necesarias
+FROM php:8.2-fpm
 
-composer install --no-dev --working-dir=/var/www/html
+# Instala herramientas y extensiones requeridas
+RUN apt-get update && apt-get install -y \
+    git unzip libpq-dev libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql zip \
+    && docker-php-ext-enable pdo_mysql
 
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-php artisan config:cache
+# Establece el directorio de trabajo
+WORKDIR /var/www/html
 
+# Copia los archivos del proyecto
+COPY . .
 
-php artisan route:cache
+# Instala dependencias de Composer
+RUN composer install --no-dev --optimize-autoloader
 
+# Crea un enlace simbólico para el almacenamiento
+RUN php artisan storage:link
 
-php artisan migrate --force
+# Cachea configuraciones y rutas
+RUN php artisan config:cache && php artisan route:cache
+
+# Establece permisos
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Expone el puerto
+EXPOSE 9000
+
+# Comando de inicio
+CMD ["php-fpm"]
