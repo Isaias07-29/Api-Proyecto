@@ -25,6 +25,12 @@ RUN php artisan storage:link
 # Cachea configuraciones y rutas
 RUN php artisan config:cache && php artisan route:cache
 
+# Realiza las migraciones
+RUN php artisan migrate --force
+
+
+
+
 # Establece permisos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
