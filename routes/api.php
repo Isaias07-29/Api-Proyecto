@@ -25,6 +25,11 @@ Route::put('/students/{id}', [StudentController :: class, 'update']);
 
 Route::delete('/students/{id}', [StudentController :: class, 'destroy']);
 
+Route::post('/students/login', [StudentController::class, 'login']);
+
+
+Route::post('/students',[StudentController :: class, 'store'] );
+
 
 //Rutas Profesores
 
@@ -96,7 +101,7 @@ Route::put('/usuarios/{id}', [UsuariosController :: class, 'update']);
 Route::delete('/usuarios/{id}', [UsuariosController :: class, 'destroy']);
 
 
-Route::post('/usuarios', [UsuariosController::class, 'login']);
+Route::post('/usuarios/login', [UsuariosController::class, 'login']);
 
 
 //Rutas para los cursos
