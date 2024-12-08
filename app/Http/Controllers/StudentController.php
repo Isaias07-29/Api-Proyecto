@@ -161,7 +161,8 @@ class StudentController extends Controller
 
     
     return response()->json([
-        'message' => 'Inicio de sesión exitoso'
+        'message' => 'Inicio de sesión exitoso',
+        'student' => $student
     ], 200);
 }
 
