@@ -138,7 +138,6 @@ class StudentController extends Controller
 
     public function login(Request $request)
 {
-    
     $validator = Validator::make($request->all(), [
         'email' => 'required|email',
         'password' => 'required'
@@ -160,13 +159,9 @@ class StudentController extends Controller
         return response()->json(['message' => 'Contraseña incorrecta'], 401);
     }
 
-  
-    $token = $student->createToken('authToken')->plainTextToken;
-
+    
     return response()->json([
-        'message' => 'Inicio de sesión exitoso',
-        'token' => $token,
-        'student' => $student
+        'message' => 'Inicio de sesión exitoso'
     ], 200);
 }
 

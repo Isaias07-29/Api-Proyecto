@@ -127,23 +127,30 @@ class UsuariosController extends Controller
 
     public function login(Request $request)
     {
-        $usuario = Usuarios::where('email', $request->email)->first();
-        if ($usuario) {
-            if (password_verify($request->password, $usuario->password)) {
-                $token = $usuario->createToken('authToken')->plainTextToken;
-                return response()->json([
-                    'message' => 'Login exitoso',
-                    'token' => $token
-                ]);
-            } else {
-                return response()->json([
-                    'message' => 'Contraseña incorrecta'
-                ], 401);
-            }
-        } else {
-            return response()->json([
-                'message' => 'Usuario no encontrado'
-            ], 404);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Error al validar los datos de inicio de sesión'], 422);
         }
+    
+        
+        $user = Usuarios::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        
+        if (!password_verify($request->password, $user->password)) {
+            return response()->json(['message' => 'Contraseña incorrecta'], 401);
+        }
+    
+        
+        return response()->json([
+            'message' => 'Inicio de sesión exitoso'
+        ], 200);
     }
 }
