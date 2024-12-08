@@ -76,34 +76,34 @@ class InscriptionsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $inscriptions = Inscriptions::find($id);
+        $validator = Validator::make($request->all(), [
+            'date_inscription' => 'required',
+            'user_id' => 'required',
+            'course_id' => 'required'
+        ]);
+
+        if ($validator->fails($request->all())) {
+            return response()->json(['message' => 'Error al validar datos de el inscripcion'], 422);
+        }
+
+        $inscriptions = Inscriptions::create([
+            'date_inscription' => $request->date_inscription,
+            'user_id' => $request->user_id,
+            'course_id' => $request->course_id
+        ]);
+
         if (!$inscriptions) {
-            return response()->json(['message' => 'Incripcion no encontrado'], 404);
-            }
+            return response()->json(['message' => 'Error al crear el inscripcion '], 500);
+        }
 
+        $data = [
+            'message' => 'Inscripcion creado con exito',
+            'data' => $inscriptions,
+            'status' => 201
+        ];
 
-            $validator = Validator::make($request->all(), [
-                'date' => 'required',
-                'user_id' => 'required',
-                'course_id' => 'required'
-            ]);
-    
-    
-            if ($validator->fails($request->all())) {
-                return response()->json(['message' => 'Error al validar datos de la inscripcion'], 422);
-            }
-    
-            $inscriptions->date = $request->date;
-            $inscriptions->user_id = $request->user_id;
-            $inscriptions->course_id = $request->course_id;
-            $inscriptions->save();
+        return response()->json($data,201);
 
-            $data = [
-                'message' => 'Inscripcion actualizado con exito',
-                'data' => $inscriptions,
-                'status' => 200
-                ];
-                return response()->json($data, 200);
     }
 
 

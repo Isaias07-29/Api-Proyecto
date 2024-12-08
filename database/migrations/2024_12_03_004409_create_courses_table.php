@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->foreignId('category')->constrained('categories');
+            $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('profesor_id')->constrained('profesors');
             $table->timestamps();
         });

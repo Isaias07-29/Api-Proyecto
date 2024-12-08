@@ -9,7 +9,7 @@ class Inscriptions extends Model
     protected $table = 'inscriptions';
 
     protected $fillable = [
-        'date',
+        'date_inscription',
         'user_id',
         'course_id'
         ];
