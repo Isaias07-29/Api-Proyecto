@@ -26,7 +26,7 @@ RUN php artisan storage:link
 RUN php artisan config:cache && php artisan route:cache
 
 # Realiza las migraciones
-RUN php artisan migrate --force
+# RUN php artisan migrate --force
 
 
 
