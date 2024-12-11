@@ -33,4 +33,4 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 8000
 
 # Comando para verificar conexión y ejecutar el servidor
-CMD ["php -r 'try { new PDO(getenv(\"DB_CONNECTION\") . \":host=\" . getenv(\"DB_HOST\") . \";dbname=\" . getenv(\"DB_DATABASE\"), getenv(\"DB_USERNAME\"), getenv(\"DB_PASSWORD\")); echo \"Database connection successful.\"; } catch (PDOException \$e) { echo \"Database connection failed: \" . \$e->getMessage(); exit(1); }' && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
