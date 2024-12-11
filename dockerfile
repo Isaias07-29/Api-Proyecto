@@ -25,11 +25,12 @@ RUN php artisan storage:link
 # Cachea configuraciones y rutas
 RUN php artisan config:cache && php artisan route:cache
 
-
 # Establece permisos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expone el puerto
-CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
 EXPOSE 8000
+
+# Comando para verificar conexión y ejecutar el servidor
+CMD ["sh", "-c", "php -r 'try { new PDO(getenv(\"DB_CONNECTION\") . \":host=\" . getenv(\"DB_HOST\") . \";dbname=\" . getenv(\"DB_DATABASE\"), getenv(\"DB_USERNAME\"), getenv(\"DB_PASSWORD\")); echo \"Database connection successful.\"; } catch (PDOException \$e) { echo \"Database connection failed: \" . \$e->getMessage(); exit(1); }' && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
