@@ -25,12 +25,11 @@ RUN php artisan storage:link
 # Cachea configuraciones y rutas
 RUN php artisan config:cache && php artisan route:cache
 
+
 # Establece permisos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expone el puerto
+CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
 EXPOSE 8000
-
-# Comando para verificar conexión y ejecutar el servidor
-CMD ["php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
